@@ -141,6 +141,7 @@ cython_debug/
 
 ### Credentials file
 credentials*
+!panthyr_credentials/credentials.py
 
 ### scratchpad directory
 scratchpad/
