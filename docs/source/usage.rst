@@ -16,11 +16,11 @@ Creating an empty credentials file
 Reading from an existing credentials file
 ==========================================
 
-    .. code:: python
+.. code:: python
 
-        >>> from panthyr_credentials.credentials import Credentials
-        >>> cred = Credentials(cred_location = './credentials_file') 
-        >>> cred.get_all()
-        {'ftp_server': 'ftp.server.com', 'ftp_user': 'ftp_username'}
-        >>> cred.get('ftp_user')
-        'ftp_username'
+    >>> from panthyr_credentials.credentials import Credentials
+    >>> cred = Credentials(cred_location = './credentials_file') 
+    >>> cred.get_all()
+    {'ftp_server': 'ftp.server.com', 'ftp_user': 'ftp_username'}
+    >>> cred.get('ftp_user')
+    'ftp_username'
