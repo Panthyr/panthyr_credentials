@@ -18,11 +18,10 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Panthyr Credentials'
-copyright = '2021, Dieter Vansteenwegen'
 author = 'Dieter Vansteenwegen'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1b'
+release = '0.1.0-beta'
 
 # -- General configuration ---------------------------------------------------
 
