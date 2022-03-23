@@ -15,8 +15,14 @@ from os import path
 from configparser import ConfigParser
 
 CRED_LOCATION_DEFAULT = '/home/hypermaq/data/credentials'
-CREDENTIALS_DEFAULT = ('email_user', 'email_password', 'email_server_port', 'ftp_server',
-                       'ftp_user', 'ftp_password')  # Used when creating an empty credentials file
+CREDENTIALS_DEFAULT = (
+    'email_user',
+    'email_password',
+    'email_server_port',
+    'ftp_server',
+    'ftp_user',
+    'ftp_password',
+)  # Used when creating an empty credentials file
 
 
 def initialize_logger() -> logging.Logger:
@@ -48,7 +54,6 @@ class pCredentials:
     This class allows creation of a blank credentials file,
     as well as getting the data from an existing one.
     """
-
     def __init__(self, cred_location: str = CRED_LOCATION_DEFAULT):
         self.cred_location = cred_location
         self._init_logging()
@@ -57,6 +62,10 @@ class pCredentials:
         self._parser = ConfigParser()
         if self._file_exists():
             self.parse()
+        try:  # nosec
+            pass
+        except:
+            pass
 
     def _file_exists(self) -> bool:
         """Check if the file exists on the host system.
