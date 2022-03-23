@@ -62,10 +62,6 @@ class pCredentials:
         self._parser = ConfigParser()
         if self._file_exists():
             self.parse()
-        try:  # nosec
-            pass
-        except:
-            pass
 
     def _file_exists(self) -> bool:
         """Check if the file exists on the host system.
