@@ -12,7 +12,7 @@ __project_link__ = 'https://waterhypernet.org/equipment/'
 from typing import Dict, Union
 import logging
 from os import path
-from configparser import ConfigParser
+import configparser
 
 CRED_LOCATION_DEFAULT = '/home/hypermaq/data/credentials'
 CREDENTIALS_DEFAULT = (
@@ -54,12 +54,13 @@ class pCredentials:
     This class allows creation of a blank credentials file,
     as well as getting the data from an existing one.
     """
+
     def __init__(self, cred_location: str = CRED_LOCATION_DEFAULT):
         self.cred_location = cred_location
         self._init_logging()
         self.credentials: Dict[str, str] = {}
 
-        self._parser = ConfigParser()
+        self._parser = configparser.ConfigParser()
         if self._file_exists():
             self.parse()
 
@@ -84,7 +85,14 @@ class pCredentials:
         if not self._file_exists:
             self.log.info(f'Credentials file {self.cred_location} does not exist.')
             raise CredentialsDontExistError
-        self._parser.read(self.cred_location)
+        try:
+            self._parser.read(self.cred_location)
+        except configparser.MissingSectionHeaderError:
+            self.log.exception(
+                f'Header info missing in file {self.cred_location}.'
+                'Add [credentials] section in file.',
+            )
+            raise
         for c, v in self._parser.items('credentials'):
             self.credentials[c] = v
 
