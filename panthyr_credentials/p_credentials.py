@@ -89,12 +89,11 @@ class pCredentials:
             self._parser.read(self.cred_location)
         except configparser.MissingSectionHeaderError:
             self.log.exception(
-                f'Header info missing in file {self.cred_location}.'
-                'Add [credentials] section in file.',
-            )
-            raise
-        for c, v in self._parser.items('credentials'):
-            self.credentials[c] = v
+                f'Header info missing in file {self.cred_location}.\n'
+                'Add [credentials] section in file.', )
+        else:
+            for c, v in self._parser.items('credentials'):
+                self.credentials[c] = v
 
     def get_cred(self, cred: str) -> Union[str, None]:
         """Return one specific credential if it exists in the dict.
