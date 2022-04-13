@@ -32,12 +32,17 @@ def initialize_logger() -> logging.Logger:
         logging.Logger: logger instance
     """
     if __name__ == '__main__':
-        return logging.getLogger('{}'.format(__name__))
+        return logging.getLogger(f'{__name__}')
     else:
-        return logging.getLogger('__main__.{}'.format(__name__))
+        return logging.getLogger(f'__main__.{__name__}')
 
 
 class CredentialsDontExistError(Exception):
+    """The credentials file does not exist on the host system."""
+    pass
+
+
+class CredentialsInvalidFormat(Exception):
     """The credentials file does not exist on the host system."""
     pass
 
@@ -87,10 +92,11 @@ class pCredentials:
             raise CredentialsDontExistError
         try:
             self._parser.read(self.cred_location)
-        except configparser.MissingSectionHeaderError:
+        except configparser.MissingSectionHeaderError as e:
             self.log.exception(
                 f'Header info missing in file {self.cred_location}.\n'
                 'Add [credentials] section in file.', )
+            raise CredentialsInvalidFormat from e
         else:
             for c, v in self._parser.items('credentials'):
                 self.credentials[c] = v
