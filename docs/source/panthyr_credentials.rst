@@ -4,10 +4,10 @@ panthyr\_credentials package
 Submodules
 ----------
 
-panthyr\_credentials.credentials module
----------------------------------------
+panthyr\_credentials.p\_credentials module
+------------------------------------------
 
-.. automodule:: panthyr_credentials.credentials
+.. automodule:: panthyr_credentials.p_credentials
    :members:
    :undoc-members:
    :show-inheritance:

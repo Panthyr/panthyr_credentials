@@ -12,11 +12,17 @@ __project_link__ = 'https://waterhypernet.org/equipment/'
 from typing import Dict, Union
 import logging
 from os import path
-from configparser import ConfigParser
+import configparser
 
 CRED_LOCATION_DEFAULT = '/home/hypermaq/data/credentials'
-CREDENTIALS_DEFAULT = ('email_user', 'email_password', 'email_server_port', 'ftp_server',
-                       'ftp_user', 'ftp_password')  # Used when creating an empty credentials file
+CREDENTIALS_DEFAULT = (
+    'email_user',
+    'email_password',
+    'email_server_port',
+    'ftp_server',
+    'ftp_user',
+    'ftp_password',
+)  # Used when creating an empty credentials file
 
 
 def initialize_logger() -> logging.Logger:
@@ -26,12 +32,17 @@ def initialize_logger() -> logging.Logger:
         logging.Logger: logger instance
     """
     if __name__ == '__main__':
-        return logging.getLogger('{}'.format(__name__))
+        return logging.getLogger(f'{__name__}')
     else:
-        return logging.getLogger('__main__.{}'.format(__name__))
+        return logging.getLogger(f'__main__.{__name__}')
 
 
 class CredentialsDontExistError(Exception):
+    """The credentials file does not exist on the host system."""
+    pass
+
+
+class CredentialsInvalidFormat(Exception):
     """The credentials file does not exist on the host system."""
     pass
 
@@ -54,7 +65,7 @@ class pCredentials:
         self._init_logging()
         self.credentials: Dict[str, str] = {}
 
-        self._parser = ConfigParser()
+        self._parser = configparser.ConfigParser()
         if self._file_exists():
             self.parse()
 
@@ -79,9 +90,16 @@ class pCredentials:
         if not self._file_exists:
             self.log.info(f'Credentials file {self.cred_location} does not exist.')
             raise CredentialsDontExistError
-        self._parser.read(self.cred_location)
-        for c, v in self._parser.items('credentials'):
-            self.credentials[c] = v
+        try:
+            self._parser.read(self.cred_location)
+        except configparser.MissingSectionHeaderError as e:
+            self.log.exception(
+                f'Header info missing in file {self.cred_location}.\n'
+                'Add [credentials] section in file.', )
+            raise CredentialsInvalidFormat from e
+        else:
+            for c, v in self._parser.items('credentials'):
+                self.credentials[c] = v
 
     def get_cred(self, cred: str) -> Union[str, None]:
         """Return one specific credential if it exists in the dict.
