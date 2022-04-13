@@ -32,9 +32,9 @@ def initialize_logger() -> logging.Logger:
         logging.Logger: logger instance
     """
     if __name__ == '__main__':
-        return logging.getLogger('{}'.format(__name__))
+        return logging.getLogger(f'{__name__}')
     else:
-        return logging.getLogger('__main__.{}'.format(__name__))
+        return logging.getLogger(f'__main__.{__name__}')
 
 
 class CredentialsDontExistError(Exception):
