@@ -14,7 +14,7 @@ import logging
 from os import path
 import configparser
 
-CRED_LOCATION_DEFAULT = '/home/hypermaq/data/credentials'
+CRED_LOCATION_DEFAULT = '/home/panthyr/data/credentials'
 CREDENTIALS_DEFAULT = (
     'email_user',
     'email_password',
