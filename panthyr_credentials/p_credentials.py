@@ -1,6 +1,5 @@
 #! /usr/bin/python3
 # -*- coding: utf-8 -*-
-# Module: panthyr_credentials
 # Authors: Dieter Vansteenwegen
 # Institution: VLIZ (Vlaams Instituut voor de Zee)
 
