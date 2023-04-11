@@ -1,6 +1,5 @@
 #! /usr/bin/python3
 # -*- coding: utf-8 -*-
-# Module: panthyr_credentials
 # Authors: Dieter Vansteenwegen
 # Institution: VLIZ (Vlaams Instituut voor de Zee)
 
@@ -14,7 +13,7 @@ import logging
 from os import path
 import configparser
 
-CRED_LOCATION_DEFAULT = '/home/hypermaq/data/credentials'
+CRED_LOCATION_DEFAULT = '/home/panthyr/data/credentials'
 CREDENTIALS_DEFAULT = (
     'email_user',
     'email_password',
@@ -88,7 +87,12 @@ class pCredentials:
             CredentialsDontExistError: If the file doesn't exist on disk.
         """
         if not self._file_exists:
-            self.log.info(f'Credentials file {self.cred_location} does not exist.')
+            self.log.error(
+                f'Credentials file {self.cred_location} does not exist. ',
+                f'Creating a blank one at {CRED_LOCATION_DEFAULT}.',
+                ' Please fill in all fields.',
+            )
+            self.create_empty()
             raise CredentialsDontExistError
         try:
             self._parser.read(self.cred_location)

@@ -23,11 +23,11 @@ More field can be added if necessary.
 .. code::
 
     [credentials]
-    email_user=hypermaq@example.com
+    email_user=panthyr@example.com
     email_password=Very_Secret
     email_server_port=smtp.example.com:587
     ftp_server=ftp.example.com
-    ftp_user=Hypermaq
+    ftp_user=panthyr
     ftp_password=AlsoVerySecret
 
 Reading from an existing credentials file
