@@ -77,7 +77,7 @@ class pCredentials:  # noqa: N801
         Returns:
             bool: True if self.cred_location is an existing file.
         """
-        return Path(self.cred_location).isfile()
+        return Path(self.cred_location).is_file()
 
     def _init_logging(self):
         """Initialize logging (self.log)"""
