@@ -8,10 +8,10 @@ __email__ = 'dieter.vansteenwegen@vliz.be'
 __project__ = 'Panthyr'
 __project_link__ = 'https://waterhypernet.org/equipment/'
 
-from typing import Dict, Union
-import logging
-from os import path
 import configparser
+import logging
+from pathlib import Path
+from typing import Dict, Union
 
 CRED_LOCATION_DEFAULT = '/home/panthyr/data/credentials'
 CREDENTIALS_DEFAULT = (
@@ -38,21 +38,24 @@ def initialize_logger() -> logging.Logger:
 
 class CredentialsDontExistError(Exception):
     """The credentials file does not exist on the host system."""
+
     pass
 
 
-class CredentialsInvalidFormat(Exception):
+class CredentialsInvalidFormatError(Exception):
     """The credentials file does not exist on the host system."""
+
     pass
 
 
 class CredentialsFileExistError(Exception):
     """The credentials file already exists on the host system."""
+
     pass
 
 
-class pCredentials:
-    """ Provide access and functions for credentials file.
+class pCredentials:  # noqa: N801
+    """Provide access and functions for credentials file.
 
     Credentials file contains credentials for specific Panthyr station.
     This class allows creation of a blank credentials file,
@@ -74,7 +77,7 @@ class pCredentials:
         Returns:
             bool: True if self.cred_location is an existing file.
         """
-        return path.isfile(self.cred_location)
+        return Path(self.cred_location).is_file()
 
     def _init_logging(self):
         """Initialize logging (self.log)"""
@@ -99,8 +102,9 @@ class pCredentials:
         except configparser.MissingSectionHeaderError as e:
             self.log.exception(
                 f'Header info missing in file {self.cred_location}.\n'
-                'Add [credentials] section in file.', )
-            raise CredentialsInvalidFormat from e
+                'Add [credentials] section in file.',
+            )
+            raise CredentialsInvalidFormatError from e
         else:
             for c, v in self._parser.items('credentials'):
                 self.credentials[c] = v
@@ -136,4 +140,5 @@ class pCredentials:
         self._parser.add_section('credentials')
         for cred in CREDENTIALS_DEFAULT:
             self._parser.set('credentials', cred, '')
-        self._parser.write(open(self.cred_location, 'x'))
+        with Path.open(self.cred_location, 'x') as target:
+            self._parser.write(target)
